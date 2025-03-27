@@ -1,0 +1,17 @@
+version: 0.2
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin 769433671483.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+  build:
+    commands:
+      - echo Building the Docker image...
+      - docker build -t backend --build-arg FRONTEND_URL=$FRONTEND_URL --build-arg SECRET_KEY=$SECRET_KEY --build-arg HOST=$HOST --build-arg PORT=$PORT --build-arg DATABASE=$DATABASE --build-arg USER=$USER --build-arg PASSWORD=$PASSWORD .
+      - docker tag backend:latest 769433671483.dkr.ecr.ca-central-1.amazonaws.com/backend-capstone:latest
+  post_build:
+    commands:
+      - echo Pushing the Docker image...
+      - docker push 769433671483.dkr.ecr.ca-central-1.amazonaws.com/backend-capstone:latest
+artifacts:
+  files: '**/*'
