@@ -13,5 +13,8 @@ phases:
     commands:
       - echo Pushing the Docker image...
       - docker push 769433671483.dkr.ecr.ca-central-1.amazonaws.com/backend-capstone:latest
+      - echo Writing imagedefinitions.json file...
+      - echo '[{"name":"backend-service","imageUri":"769433671483.dkr.ecr.ca-central-1.amazonaws.com/backend-capstone:latest"}]' > ./imagedefinitions.json
 artifacts:
-  files: '**/*'
+  files:
+    - imagedefinitions.json
